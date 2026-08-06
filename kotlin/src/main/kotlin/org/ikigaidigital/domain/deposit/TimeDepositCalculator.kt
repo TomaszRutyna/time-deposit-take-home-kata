@@ -15,12 +15,16 @@ class TimeDepositCalculator(private val planResolver: PlanDefinitionResolver) {
     //method is breaking immutability, but due to task requirement it cannot be changed
     fun updateBalance(timeDeposits: List<TimeDeposit>) {
         timeDeposits.forEach {
-            val interest = planResolver.resolvePlanDefinition(it.planType)
+            val planDefinition = planResolver.resolvePlanDefinition(it.planType)
+            val interest = planDefinition
                 ?.calculateInterests(it)
                 ?: BigDecimal.ZERO.setScale(DEFAULT_DECIMAL_PLACES, RoundingMode.HALF_UP)
 
-            it.balance += interest.toDouble()
-            it.forDate = LocalDate.now()
+            if (interest.compareTo(BigDecimal.ZERO) != 0) {
+                it.balance += interest.toDouble()
+                it.forDate = LocalDate.now()
+                it.nextInterestCalculationDate = planDefinition?.nextInterestCalculationDate(it, LocalDate.now())
+            }
         }
     }
 }

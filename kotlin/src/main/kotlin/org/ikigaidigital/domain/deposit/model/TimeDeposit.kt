@@ -7,5 +7,6 @@ data class TimeDeposit(
     val planType: String,
     var balance: Double,
     val days: Int,
-    var forDate: LocalDate? = null
+    var forDate: LocalDate? = null,
+    var nextInterestCalculationDate: LocalDate? = null
 )

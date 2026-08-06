@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
+import java.time.LocalDate
 
 @Repository
 interface TimeDepositJpaRepository: JpaRepository<TimeDepositEntity, Int>, PagingAndSortingRepository<TimeDepositEntity, Int> {
@@ -18,4 +19,7 @@ interface TimeDepositJpaRepository: JpaRepository<TimeDepositEntity, Int>, Pagin
     @Query("SELECT e FROM TimeDepositEntity e " +
             " LEFT JOIN FETCH e.withdrawals w WHERE e.id = :id ")
     fun findByIdWithWithdrawals(id: Int): TimeDepositEntity?
+
+    @Query("SELECT e FROM TimeDepositEntity e WHERE e.nextInterestCalculationDate <= :date")
+    fun findByNextInterestCalculationDateNotAfter(date: LocalDate, pageable: Pageable): Page<TimeDepositEntity>
 }

@@ -20,16 +20,18 @@ fun TimeDepositEntity.updateEntity(timeDeposit: TimeDeposit) =
     this.copy(
         balance = BigDecimal(timeDeposit.balance),
         forDate = timeDeposit.forDate?: LocalDate.now(),
+        lastInterestCalculationDate = if (timeDeposit.nextInterestCalculationDate != null) this.nextInterestCalculationDate else this.lastInterestCalculationDate,
+        nextInterestCalculationDate = if (timeDeposit.nextInterestCalculationDate != null) timeDeposit.nextInterestCalculationDate else this.nextInterestCalculationDate,
         dayOfDeposit = timeDeposit.days
     )
 
-fun TimeDeposit.toEntity(nextInterestCalculationDate: LocalDate?) =
+fun TimeDeposit.toEntity() =
     TimeDepositEntity(
         planType = this.planType,
         balance = BigDecimal.valueOf(this.balance),
         forDate = this.forDate?: LocalDate.now(),
         dayOfDeposit = this.days,
-        nextInterestCalculationDate = nextInterestCalculationDate,
+        nextInterestCalculationDate = this.nextInterestCalculationDate,
         version = 0
     )
 
@@ -45,7 +47,8 @@ fun TimeDepositEntity.toDomain() =
         this.planType,
         this.balance.toDouble(),
         this.dayOfDeposit,
-        this.forDate
+        this.forDate,
+        this.nextInterestCalculationDate
     )
 
 fun Set<WithdrawalEntity>.toDomain(timeDepositId: Int) =

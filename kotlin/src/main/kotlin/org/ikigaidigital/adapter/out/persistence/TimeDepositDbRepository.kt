@@ -12,6 +12,7 @@ import org.ikigaidigital.domain.deposit.model.TimeDepositWithWithdrawals
 import org.ikigaidigital.domain.deposit.model.Withdrawal
 import org.ikigaidigital.port.out.TimeDepositRepository
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -26,7 +27,6 @@ class TimeDepositDbRepository(
     @Transactional
     override fun save(
         timeDeposit: TimeDeposit,
-        nextInterestCalculationDate: LocalDate?,
         withdrawal: Withdrawal?
     ): TimeDepositWithWithdrawals {
         val storedTimeDepositId = if (timeDeposit.id != null) {
@@ -41,7 +41,7 @@ class TimeDepositDbRepository(
 
             storedTimeDepositId.id
         } else {
-            timeDepositJpaRepository.save(timeDeposit.toEntity(nextInterestCalculationDate)).id
+            timeDepositJpaRepository.save(timeDeposit.toEntity()).id
         }
 
         return timeDepositJpaRepository.findByIdWithWithdrawals(storedTimeDepositId!!)!!.toDomainWithWithdrawals()
@@ -55,10 +55,19 @@ class TimeDepositDbRepository(
         pageIndex: Int?
     ) = if (pageSize != null && pageIndex != null) {
         timeDepositJpaRepository.findPageOfTimeDeposits(
-            PageRequest.of(pageSize, pageIndex)
+            PageRequest.of(pageSize, pageIndex, Sort.by("id"))
         ).content.map { it.toDomainWithWithdrawals() }
     } else {
         timeDepositJpaRepository.findAll().map { it.toDomainWithWithdrawals() }
     }
 
+    override fun getTimeDepositsForInterestRecalculation(
+        pageSize: Int,
+        pageIndex: Int
+    ) = timeDepositJpaRepository.findByNextInterestCalculationDateNotAfter(
+        LocalDate.now(),
+        PageRequest.of(pageSize, pageIndex, Sort.by("id"))
+    )
+        .content
+        .map { it.toDomain() }
 }

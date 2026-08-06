@@ -1,5 +1,6 @@
 package org.ikigaidigital.adapter.out.persistence.entity
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
@@ -27,7 +28,7 @@ data class TimeDepositEntity (
     val dayOfDeposit: Int,
     val lastInterestCalculationDate: LocalDate? = null,
     val nextInterestCalculationDate: LocalDate? = null,
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "timeDeposit")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "timeDeposit", cascade = [CascadeType.ALL])
     val withdrawals: MutableSet<WithdrawalEntity> = mutableSetOf(),
     @Version
     val version: Int? = null,

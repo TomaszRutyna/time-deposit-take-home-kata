@@ -46,6 +46,5 @@ class TimeDepositCalculatorTest {
         calc.updateBalance(plans)
         //then
         assertThat(plans[0].balance).isEqualTo(1234567.00)
-        assertThat(plans[0].forDate).isEqualTo(LocalDate.now())
     }
 }

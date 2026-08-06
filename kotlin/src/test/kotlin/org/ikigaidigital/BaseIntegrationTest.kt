@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.ikigaidigital.adapter.out.persistence.repository.TimeDepositJpaRepository
 import org.ikigaidigital.bootstrap.TimeDepositApplication
+import org.ikigaidigital.port.`in`.InterestRecalculation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -27,6 +28,8 @@ class BaseIntegrationTest {
     lateinit var objectMapper: ObjectMapper
     @Autowired
     lateinit var timeDepositRepository: TimeDepositJpaRepository
+    @Autowired
+    lateinit var interestRecalculation: InterestRecalculation
 }
 
 @TestConfiguration(proxyBeanMethods = false)
