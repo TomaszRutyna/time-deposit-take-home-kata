@@ -26,7 +26,7 @@ data class WithdrawalEntity (
     private val amount: BigDecimal,
     private val date: LocalDate,
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "transaction_id")
+    @JoinColumn(name = "time_deposit_id")
     private val timeDeposit: TimeDepositEntity,
     @CreationTimestamp
     private val createdAt: Instant? = null
