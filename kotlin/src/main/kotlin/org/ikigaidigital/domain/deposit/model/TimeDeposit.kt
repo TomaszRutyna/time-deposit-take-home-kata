@@ -3,7 +3,7 @@ package org.ikigaidigital.domain.deposit.model
 import java.time.LocalDate
 
 data class TimeDeposit(
-    val id: Int,
+    val id: Int? = null,
     val planType: String,
     var balance: Double,
     val days: Int,

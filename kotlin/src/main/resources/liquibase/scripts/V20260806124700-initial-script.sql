@@ -20,6 +20,5 @@ create table public.withdrawals
     time_deposit_id integer
         constraint fkqkg2h07nleh4m0duhtrcde9q7
             references public.time_deposits,
-    created_at     timestamp(6) with time zone,
-    plan_type      varchar(255) not null
+    created_at     timestamp(6) with time zone
 );

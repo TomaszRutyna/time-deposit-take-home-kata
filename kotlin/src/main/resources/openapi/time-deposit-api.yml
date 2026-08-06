@@ -16,7 +16,10 @@ paths:
       responses:
         '200':
           description: Time deposit upserted
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeDepositResponse'
     get:
       tags:
         - bar
@@ -38,7 +41,7 @@ paths:
                 $ref: '#/components/schemas/TimeDepositPage'
 components:
   schemas:
-    TimeDeposit:
+    TimeDepositRequest:
       type: object
       required:
         - amount
@@ -46,11 +49,11 @@ components:
         - planType
       properties:
         id:
-          type: number
+          type: integer
         amount:
           type: number
         days:
-          type: number
+          type: integer
         planType:
           type: string
 
@@ -63,11 +66,11 @@ components:
         - planType
       properties:
         id:
-          type: number
+          type: integer
         amount:
           type: number
         days:
-          type: number
+          type: integer
         planType:
           type: string
         withdrawals:
@@ -83,7 +86,7 @@ components:
         - date
       properties:
         id:
-          type: number
+          type: integer
         amount:
           type: number
         date:
@@ -131,4 +134,4 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/TimeDeposit'
+            $ref: '#/components/schemas/TimeDepositRequest'

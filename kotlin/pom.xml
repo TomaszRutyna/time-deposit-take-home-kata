@@ -41,7 +41,7 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>5.1.0</version>
+                <version>7.24.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -53,14 +53,32 @@
                             </inputSpec>
                             <generatorName>kotlin-spring</generatorName>
                             <configOptions>
-                                <basePackage>org.ikigaidigital.adapter.in.rest</basePackage>
-                                <apiPackage>org.ikigaidigital.adapter.in.rest.api</apiPackage>
-                                <modelPackage>org.ikigaidigital.adapter.in.rest.model</modelPackage>
-                                <configPackage>org.ikigaidigital.adapter.in.rest.config</configPackage>
+                                <basePackage>org.ikigaidigital.adapter.rest</basePackage>
+                                <apiPackage>org.ikigaidigital.adapter.rest.api</apiPackage>
+                                <modelPackage>org.ikigaidigital.adapter.rest.model</modelPackage>
+                                <configPackage>org.ikigaidigital.adapter.rest.config</configPackage>
                                 <delegatePattern>true</delegatePattern>
-                                <interfaceOnly>false</interfaceOnly>
+                                <interfaceOnly>true</interfaceOnly>
                                 <modelNameSuffix>Dto</modelNameSuffix>
+                                <useSpringBoot3>true</useSpringBoot3>
                             </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/openapi</source>
+                            </sources>
                         </configuration>
                     </execution>
                 </executions>
@@ -129,6 +147,12 @@
         <dependency>
             <groupId>tools.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.22.1</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
