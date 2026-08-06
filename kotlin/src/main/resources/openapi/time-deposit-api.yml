@@ -1,0 +1,134 @@
+openapi: 3.0.0
+info:
+  title: Time deposit API
+  version: 1.0.0
+
+paths:
+  /time-deposit:
+    put:
+      tags:
+        - upsertTimeDeposit
+      summary: Upsert Time deposit
+      description: Insert or update time deposit
+      operationId: upsertTimeDeposit
+      requestBody:
+        $ref: '#/components/requestBodies/TimeDepositRequest'
+      responses:
+        '200':
+          description: Time deposit upserted
+
+    get:
+      tags:
+        - bar
+      summary: get Bar pages.
+      description: simple sample endpoint.
+      operationId: getTimeDeposits
+      parameters:
+        - in: query
+          name: pageable
+          required: false
+          schema:
+            $ref: '#/components/schemas/Pageable'
+      responses:
+        '200':
+          description: Returned page of time deposit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeDepositPage'
+components:
+  schemas:
+    TimeDeposit:
+      type: object
+      required:
+        - amount
+        - days
+        - planType
+      properties:
+        id:
+          type: number
+        amount:
+          type: number
+        days:
+          type: number
+        planType:
+          type: string
+
+    TimeDepositResponse:
+      type: object
+      required:
+        - id
+        - amount
+        - days
+        - planType
+      properties:
+        id:
+          type: number
+        amount:
+          type: number
+        days:
+          type: number
+        planType:
+          type: string
+        withdrawals:
+          type: array
+          items:
+            $ref: '#/components/schemas/WithdrawalResponse'
+
+    WithdrawalResponse:
+      type: object
+      required:
+        - id
+        - amount
+        - date
+      properties:
+        id:
+          type: number
+        amount:
+          type: number
+        date:
+          type: string
+          format: date
+
+    Pageable:
+      description: minimal Pageable query parameters
+      type: object
+      properties:
+        page:
+          type: integer
+        size:
+          type: integer
+
+    Page:
+      description: minimal Page response without content property
+      type: object
+      properties:
+        number:
+          type: integer
+        size:
+          type: integer
+
+    TimeDepositContent:
+      description: specific content List of the Page response
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeDepositResponse'
+
+    TimeDepositPage:
+      description: typed Page
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - $ref: '#/components/schemas/TimeDepositContent'
+
+  requestBodies:
+    TimeDepositRequest:
+      description: Time deposit request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TimeDeposit'

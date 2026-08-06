@@ -39,6 +39,33 @@
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
         <plugins>
             <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>5.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                ${project.basedir}/src/main/resources/openapi/time-deposit-api.yml
+                            </inputSpec>
+                            <generatorName>kotlin-spring</generatorName>
+                            <configOptions>
+                                <basePackage>org.ikigaidigital.adapter.in.rest</basePackage>
+                                <apiPackage>org.ikigaidigital.adapter.in.rest.api</apiPackage>
+                                <modelPackage>org.ikigaidigital.adapter.in.rest.model</modelPackage>
+                                <configPackage>org.ikigaidigital.adapter.in.rest.config</configPackage>
+                                <delegatePattern>true</delegatePattern>
+                                <interfaceOnly>false</interfaceOnly>
+                                <modelNameSuffix>Dto</modelNameSuffix>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
