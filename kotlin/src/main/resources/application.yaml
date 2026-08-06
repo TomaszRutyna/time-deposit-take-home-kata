@@ -9,3 +9,22 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:liquibase/changelog-master.yaml
+
+time-deposit:
+  default:
+    decimal-places: 2
+    first-interest-calculation-day: 30
+  plans:
+    basic:
+        first-interest-calculation-day: ${time-deposit.default.first-interest-calculation-day}
+        decimal-places: ${time-deposit.default.decimal-places}
+        interest-rate: 0.01
+    student:
+        first-interest-calculation-day: ${time-deposit.default.first-interest-calculation-day}
+        last-interest-calculation-day: 366
+        decimal-places: ${time-deposit.default.decimal-places}
+        interest-rate: 0.03
+    premium:
+        first-interest-calculation-day: 45
+        decimal-places: ${time-deposit.default.decimal-places}
+        interest-rate: 0.05
