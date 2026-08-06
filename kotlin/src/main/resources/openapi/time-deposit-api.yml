@@ -22,9 +22,8 @@ paths:
                 $ref: '#/components/schemas/TimeDepositResponse'
     get:
       tags:
-        - bar
-      summary: get Bar pages.
-      description: simple sample endpoint.
+        - getTimeDeposits
+      summary: get time deposits page.
       operationId: getTimeDeposits
       parameters:
         - in: query
