@@ -60,12 +60,22 @@ class TimeDepositDbRepository(
     override fun getTimeDeposits(
         pageIndex: Int?,
         pageSize: Int?
-    ) = if (pageIndex != null && pageSize != null) {
-        timeDepositJpaRepository.findPageOfTimeDeposits(
-            PageRequest.of(pageIndex, pageSize, Sort.by("id"))
-        ).content.map { it.toDomainWithWithdrawals() }
-    } else {
-        timeDepositJpaRepository.findAll().map { it.toDomainWithWithdrawals() }
+    ): List<TimeDepositWithWithdrawals> {
+        val ids = if (pageIndex != null && pageSize != null) {
+            timeDepositJpaRepository.findPageOfIds(
+                PageRequest.of(pageIndex, pageSize, Sort.by("id"))
+            ).content
+        } else {
+            timeDepositJpaRepository.findPageOfIds(
+                PageRequest.of(0, Int.MAX_VALUE, Sort.by("id"))
+            ).content
+        }
+
+        if (ids.isEmpty()) return emptyList()
+
+        return timeDepositJpaRepository.findByIdsWithWithdrawals(ids)
+            .sortedBy { it.id }
+            .map { it.toDomainWithWithdrawals() }
     }
 
     override fun getTimeDepositsForInterestRecalculation(

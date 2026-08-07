@@ -12,9 +12,11 @@ import java.time.LocalDate
 @Repository
 interface TimeDepositJpaRepository: JpaRepository<TimeDepositEntity, Int>, PagingAndSortingRepository<TimeDepositEntity, Int> {
 
-    @Query("SELECT e FROM TimeDepositEntity e " +
-            " LEFT JOIN FETCH e.withdrawals w ")
-    fun findPageOfTimeDeposits(pageable: Pageable): Page<TimeDepositEntity>
+    @Query("SELECT e.id FROM TimeDepositEntity e")
+    fun findPageOfIds(pageable: Pageable): Page<Int>
+
+    @Query("SELECT e FROM TimeDepositEntity e LEFT JOIN FETCH e.withdrawals WHERE e.id IN :ids")
+    fun findByIdsWithWithdrawals(ids: List<Int>): List<TimeDepositEntity>
 
     @Query("SELECT e FROM TimeDepositEntity e " +
             " LEFT JOIN FETCH e.withdrawals w WHERE e.id = :id ")
