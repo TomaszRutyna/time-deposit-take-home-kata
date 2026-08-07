@@ -9,11 +9,9 @@ import org.ikigaidigital.adapter.rest.model.TimeDepositRequest
 import org.ikigaidigital.port.`in`.FetchTimeDeposit
 import org.ikigaidigital.port.`in`.UpsertTimeDeposit
 import org.slf4j.LoggerFactory
-import org.springframework.context.annotation.Primary
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
-@Primary
 @RestController
 class TimeDepositController(
     private val fetchTimeDeposit: FetchTimeDeposit,

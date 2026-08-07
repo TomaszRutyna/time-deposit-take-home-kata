@@ -6,6 +6,7 @@ import org.ikigaidigital.adapter.out.persistence.entity.TimeDepositEntity
 import org.ikigaidigital.adapter.rest.model.TimeDepositPage
 import org.ikigaidigital.adapter.rest.model.TimeDepositRequest
 import org.ikigaidigital.adapter.rest.model.TimeDepositResponse
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.MediaType
@@ -17,6 +18,11 @@ class TimeDepositControllerTest: BaseIntegrationTest() {
 
     companion object {
         const val API_URL = "/time-deposit"
+    }
+
+    @BeforeEach
+    fun setUp() {
+        timeDepositRepository.deleteAll()
     }
 
     @Test

@@ -1,6 +1,6 @@
 package org.ikigaidigital.adapter.`in`.rest.exception
 
-import org.ikigaidigital.adapter.out.persistence.exception.TimeDepositNotFoundException
+import org.ikigaidigital.domain.deposit.exception.TimeDepositNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice

@@ -1,6 +1,6 @@
 package org.ikigaidigital.adapter.out.persistence
 
-import org.ikigaidigital.adapter.out.persistence.exception.TimeDepositNotFoundException
+import org.ikigaidigital.domain.deposit.exception.TimeDepositNotFoundException
 import org.ikigaidigital.adapter.out.persistence.mapper.toDomain
 import org.ikigaidigital.adapter.out.persistence.mapper.toDomainWithWithdrawals
 import org.ikigaidigital.adapter.out.persistence.mapper.toEntity

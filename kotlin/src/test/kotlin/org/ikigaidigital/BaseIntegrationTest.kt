@@ -20,7 +20,7 @@ import org.testcontainers.utility.DockerImageName
 @AutoConfigureMockMvc
 @Import(PostgresTestcontainersConfiguration::class, ObjectMapperConfiguration::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [TimeDepositApplication::class])
-class BaseIntegrationTest {
+abstract class BaseIntegrationTest {
 
     @Autowired
     lateinit var mockMvc: MockMvc
