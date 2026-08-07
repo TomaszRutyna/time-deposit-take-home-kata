@@ -98,7 +98,7 @@ Creates a new time deposit (omit the `id` field):
 curl -X PUT http://localhost:8080/time-deposit \
   -H "Content-Type: application/json" \
   -d '{
-    "amount": 10000.00,
+    "balance": 10000.00,
     "days": 365,
     "planType": "basic"
   }'
@@ -109,7 +109,7 @@ curl -X PUT http://localhost:8080/time-deposit \
 ```json
 {
   "id": 1,
-  "amount": 10000.00,
+  "balance": 10000.00,
   "days": 365,
   "planType": "basic",
   "withdrawals": []
@@ -122,7 +122,7 @@ curl -X PUT http://localhost:8080/time-deposit \
 curl -X PUT http://localhost:8080/time-deposit \
   -H "Content-Type: application/json" \
   -d '{
-    "amount": 5000.00,
+    "balance": 5000.00,
     "days": 180,
     "planType": "student"
   }'
@@ -133,7 +133,7 @@ curl -X PUT http://localhost:8080/time-deposit \
 ```json
 {
   "id": 2,
-  "amount": 5000.00,
+  "balance": 5000.00,
   "days": 180,
   "planType": "student",
   "withdrawals": []
@@ -146,7 +146,7 @@ curl -X PUT http://localhost:8080/time-deposit \
 curl -X PUT http://localhost:8080/time-deposit \
   -H "Content-Type: application/json" \
   -d '{
-    "amount": 50000.00,
+    "balance": 50000.00,
     "days": 730,
     "planType": "premium"
   }'
@@ -157,7 +157,7 @@ curl -X PUT http://localhost:8080/time-deposit \
 ```json
 {
   "id": 3,
-  "amount": 50000.00,
+  "balance": 50000.00,
   "days": 730,
   "planType": "premium",
   "withdrawals": []
@@ -166,14 +166,14 @@ curl -X PUT http://localhost:8080/time-deposit \
 
 ### Update a Time Deposit (Partial Withdrawal)
 
-Update an existing deposit by providing the `id`. If the amount is reduced, a withdrawal is automatically recorded:
+Update an existing deposit by providing the `id`. If the balance is reduced, a withdrawal is automatically recorded:
 
 ```bash
 curl -X PUT http://localhost:8080/time-deposit \
   -H "Content-Type: application/json" \
   -d '{
     "id": 1,
-    "amount": 8000.00,
+    "balance": 8000.00,
     "days": 365,
     "planType": "basic"
   }'
@@ -184,7 +184,7 @@ curl -X PUT http://localhost:8080/time-deposit \
 ```json
 {
   "id": 1,
-  "amount": 8000.00,
+  "balance": 8000.00,
   "days": 365,
   "planType": "basic",
   "withdrawals": [
@@ -202,7 +202,7 @@ curl -X PUT http://localhost:8080/time-deposit \
 Retrieve all time deposits with pagination:
 
 ```bash
-curl -X GET "http://localhost:8080/time-deposit?page=0&size=10"
+curl -X GET "http://localhost:8080/time-deposit?page=0&pageSize=10"
 ```
 
 **Expected response:**
@@ -210,11 +210,11 @@ curl -X GET "http://localhost:8080/time-deposit?page=0&size=10"
 ```json
 {
   "number": 0,
-  "size": 10,
+  "pageSize": 10,
   "content": [
     {
       "id": 1,
-      "amount": 8000.00,
+      "balance": 8000.00,
       "days": 365,
       "planType": "basic",
       "withdrawals": [
@@ -227,7 +227,7 @@ curl -X GET "http://localhost:8080/time-deposit?page=0&size=10"
     },
     {
       "id": 2,
-      "amount": 5000.00,
+      "balance": 5000.00,
       "days": 180,
       "planType": "student",
       "withdrawals": []
@@ -239,13 +239,13 @@ curl -X GET "http://localhost:8080/time-deposit?page=0&size=10"
 ### Custom Page Size
 
 ```bash
-curl -X GET "http://localhost:8080/time-deposit?page=0&size=5"
+curl -X GET "http://localhost:8080/time-deposit?page=0&pageSize=5"
 ```
 
 ### Second Page
 
 ```bash
-curl -X GET "http://localhost:8080/time-deposit?page=1&size=5"
+curl -X GET "http://localhost:8080/time-deposit?page=1&pageSize=5"
 ```
 
 ---

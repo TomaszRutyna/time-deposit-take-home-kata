@@ -34,8 +34,8 @@ class TimeDepositController(
     }
 
     override fun upsertTimeDeposit(timeDeposit: TimeDepositRequest): ResponseEntity<org.ikigaidigital.adapter.rest.model.TimeDepositResponse> {
-        logger.info("Upsert time deposit request - id: {}, planType: {}, amount: {}, days: {}",
-            timeDeposit.id, timeDeposit.planType, timeDeposit.amount, timeDeposit.days)
+        logger.info("Upsert time deposit request - id: {}, planType: {}, balance: {}, days: {}",
+            timeDeposit.id, timeDeposit.planType, timeDeposit.balance, timeDeposit.days)
 
         val result = upsertTimeDeposit.upsertTimeDeposit(timeDeposit.toDomain()).toResponse()
         logger.info("Upsert time deposit completed - id: {}", result.id)

@@ -31,7 +31,7 @@ class TimeDepositControllerTest: BaseIntegrationTest() {
         val request = TimeDepositRequest(
             planType = "student",
             days = 1,
-            amount = BigDecimal.valueOf(1000)
+            balance = BigDecimal.valueOf(1000)
         )
         //when
         val responseString = mockMvc.perform(
@@ -45,7 +45,7 @@ class TimeDepositControllerTest: BaseIntegrationTest() {
         assertThat(response.id).isNotNull
         assertThat(response.planType).isEqualTo(request.planType)
         assertThat(response.days).isEqualTo(request.days)
-        assertThat(response.amount.toInt()).isEqualTo(request.amount.toInt())
+        assertThat(response.balance.toInt()).isEqualTo(request.balance.toInt())
 
         assertThat(response.withdrawals).isEmpty()
 
@@ -71,7 +71,7 @@ class TimeDepositControllerTest: BaseIntegrationTest() {
             id = storedTimeDeposit.id,
             planType = "student",
             days = 11,
-            amount = BigDecimal.valueOf(900)
+            balance = BigDecimal.valueOf(900)
         )
         //when
 
@@ -86,7 +86,7 @@ class TimeDepositControllerTest: BaseIntegrationTest() {
         assertThat(response.id).isEqualTo(request.id!!)
         assertThat(response.planType).isEqualTo(request.planType)
         assertThat(response.days).isEqualTo(request.days)
-        assertThat(response.amount.toInt()).isEqualTo(request.amount.toInt())
+        assertThat(response.balance.toInt()).isEqualTo(request.balance.toInt())
 
         val timeDeposit = timeDepositRepository.findByIdWithWithdrawals(response.id!!)
         assertThat(timeDeposit?.forDate).isEqualTo(LocalDate.now())
@@ -140,6 +140,6 @@ class TimeDepositControllerTest: BaseIntegrationTest() {
         assertThat(this.id).isEqualTo(timeDepositEntity.id!!)
         assertThat(this.planType).isEqualTo(timeDepositEntity.planType)
         assertThat(this.days).isEqualTo(timeDepositEntity.dayOfDeposit)
-        assertThat(this.amount.toInt()).isEqualTo(timeDepositEntity.balance.toInt())
+        assertThat(this.balance.toInt()).isEqualTo(timeDepositEntity.balance.toInt())
     }
 }

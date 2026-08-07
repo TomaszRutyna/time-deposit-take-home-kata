@@ -17,7 +17,7 @@ class TimeDepositRestMapperTest {
         //given
         val request = TimeDepositRequest(
             id = 1,
-            amount = BigDecimal.valueOf(5000.50),
+            balance = BigDecimal.valueOf(5000.50),
             days = 90,
             planType = "basic"
         )
@@ -35,7 +35,7 @@ class TimeDepositRestMapperTest {
     fun shouldMapRequestWithoutIdToDomain() {
         //given
         val request = TimeDepositRequest(
-            amount = BigDecimal.valueOf(1000.00),
+            balance = BigDecimal.valueOf(1000.00),
             days = 30,
             planType = "student"
         )
@@ -70,7 +70,7 @@ class TimeDepositRestMapperTest {
         val response = domainWithWithdrawals.toResponse()
         //then
         assertThat(response.id).isEqualTo(5)
-        assertThat(response.amount).isEqualByComparingTo(BigDecimal.valueOf(9500.75))
+        assertThat(response.balance).isEqualByComparingTo(BigDecimal.valueOf(9500.75))
         assertThat(response.days).isEqualTo(180)
         assertThat(response.planType).isEqualTo("basic")
         val responseWithdrawals = response.withdrawals!!
@@ -98,7 +98,7 @@ class TimeDepositRestMapperTest {
         val response = domainWithWithdrawals.toResponse()
         //then
         assertThat(response.id).isEqualTo(3)
-        assertThat(response.amount).isEqualByComparingTo(BigDecimal.valueOf(2000.00))
+        assertThat(response.balance).isEqualByComparingTo(BigDecimal.valueOf(2000.00))
         assertThat(response.days).isEqualTo(60)
         assertThat(response.planType).isEqualTo("student")
         assertThat(response.withdrawals).isEmpty()

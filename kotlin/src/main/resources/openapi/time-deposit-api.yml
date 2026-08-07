@@ -43,13 +43,13 @@ components:
     TimeDepositRequest:
       type: object
       required:
-        - amount
+        - balance
         - days
         - planType
       properties:
         id:
           type: integer
-        amount:
+        balance:
           type: number
         days:
           type: integer
@@ -60,13 +60,13 @@ components:
       type: object
       required:
         - id
-        - amount
+        - balance
         - days
         - planType
       properties:
         id:
           type: integer
-        amount:
+        balance:
           type: number
         days:
           type: integer

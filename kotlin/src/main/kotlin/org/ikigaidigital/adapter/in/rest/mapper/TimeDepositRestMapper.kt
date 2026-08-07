@@ -14,7 +14,7 @@ fun TimeDepositRequest.toDomain() =
     TimeDeposit(
         this.id,
         this.planType,
-        this.amount.toDouble(),
+        this.balance.toDouble(),
         this.days,
         LocalDate.now()
     )

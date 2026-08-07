@@ -157,7 +157,7 @@ sequenceDiagram
     participant Repo as Repository
     participant DB as PostgreSQL
 
-    Client->>Controller: PUT /time-deposit (with id, lower amount)
+    Client->>Controller: PUT /time-deposit (with id, lower balance)
     Controller->>Service: upsert(TimeDeposit)
     Service->>Repo: findById(id)
     Repo->>DB: SELECT
@@ -221,7 +221,7 @@ sequenceDiagram
     participant Repo as Repository
     participant DB as PostgreSQL
 
-    Client->>Controller: GET /time-deposit?page=0&size=10
+    Client->>Controller: GET /time-deposit?page=0&pageSize=10
     Controller->>Service: fetch(pageable)
     Service->>Repo: findAll(pageable)
     Repo->>DB: SELECT with LIMIT/OFFSET
