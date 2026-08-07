@@ -11,6 +11,7 @@ import org.ikigaidigital.domain.deposit.model.TimeDeposit
 import org.ikigaidigital.domain.deposit.model.TimeDepositWithWithdrawals
 import org.ikigaidigital.domain.deposit.model.Withdrawal
 import org.ikigaidigital.port.out.TimeDepositRepository
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
@@ -24,6 +25,8 @@ class TimeDepositDbRepository(
     private val withdrawalJpaRepository: WithdrawalJpaRepository,
 ) : TimeDepositRepository {
 
+    private val logger = LoggerFactory.getLogger(TimeDepositDbRepository::class.java)
+
     @Transactional
     override fun save(
         timeDeposit: TimeDeposit,
@@ -34,14 +37,18 @@ class TimeDepositDbRepository(
                 ?: throw TimeDepositNotFoundException(timeDeposit.id)
 
             val updatedEntity = timeDepositJpaRepository.save(existingEntity.updateEntity(timeDeposit))
+            logger.debug("Updated time deposit entity id: {}", updatedEntity.id)
 
             withdrawal?.let {
-                withdrawalJpaRepository.save(it.toEntity(updatedEntity))
+                val savedWithdrawal = withdrawalJpaRepository.save(it.toEntity(updatedEntity))
+                logger.debug("Saved withdrawal id: {} for deposit id: {}", savedWithdrawal.id, updatedEntity.id)
             }
 
             existingEntity.id
         } else {
-            timeDepositJpaRepository.save(timeDeposit.toEntity()).id
+            val savedEntity = timeDepositJpaRepository.save(timeDeposit.toEntity())
+            logger.debug("Created new time deposit entity id: {}", savedEntity.id)
+            savedEntity.id
         }
 
         return timeDepositJpaRepository.findByIdWithWithdrawals(savedEntityId!!)!!.toDomainWithWithdrawals()
@@ -64,10 +71,13 @@ class TimeDepositDbRepository(
     override fun getTimeDepositsForInterestRecalculation(
         pageIndex: Int,
         pageSize: Int
-    ) = timeDepositJpaRepository.findByNextInterestCalculationDateNotAfter(
-        LocalDate.now(),
-        PageRequest.of(pageIndex, pageSize, Sort.by("id"))
-    )
-        .content
-        .map { it.toDomain() }
+    ): List<TimeDeposit> {
+        val result = timeDepositJpaRepository.findByNextInterestCalculationDateNotAfter(
+            LocalDate.now(),
+            PageRequest.of(pageIndex, pageSize, Sort.by("id"))
+        ).content.map { it.toDomain() }
+
+        logger.debug("Found {} deposits eligible for interest recalculation (page: {})", result.size, pageIndex)
+        return result
+    }
 }
