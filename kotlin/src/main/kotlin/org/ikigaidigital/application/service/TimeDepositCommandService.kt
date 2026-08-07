@@ -43,6 +43,7 @@ class TimeDepositCommandService(
         } else {
             logger.info("Updating time deposit id: {}", timeDeposit.id)
 
+            //if balance changed outside our service it means that withdrawal was made
             val withdrawal = timeDepositRepository.getTimeDeposit(timeDeposit.id)
                 ?.balance
                 ?.takeIf { it != timeDeposit.balance }
