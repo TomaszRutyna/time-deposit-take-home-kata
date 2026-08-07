@@ -1,0 +1,58 @@
+---
+description: Kotlin code style and conventions for the Time Deposit project
+globs: "**/*.kt"
+alwaysApply: false
+---
+
+# Kotlin Code Style
+
+## Architecture
+
+This project follows **Hexagonal Architecture** (Ports & Adapters):
+- `domain/` — Pure business logic, no framework dependencies
+- `port/in/` — Driving port interfaces (use cases)
+- `port/out/` — Driven port interfaces (repository contracts)
+- `application/service/` — Use case implementations
+- `adapter/in/rest/` — REST controllers
+- `adapter/in/scheduler/` — Scheduled jobs
+- `adapter/out/persistence/` — JPA entities, repositories, mappers
+
+## Code Style Rules
+
+### Naming
+- Use `camelCase` for variables, functions, parameters
+- Use `PascalCase` for classes, interfaces, enums
+- Use `SCREAMING_SNAKE_CASE` for constants
+- Parameter names must reflect their semantic meaning (e.g., `pageIndex` not `pageSize` when representing a page number)
+- Avoid typos in class/file names — file names must match class names exactly
+
+### Formatting
+- Always use spaces around `?:` (elvis operator): `value ?: default`
+- Always use space before closing `}` in lambdas: `{ it.toResponse() }`
+- Keep lines under 120 characters — extract local variables for complex expressions
+- Use trailing commas in multi-line parameter lists
+
+### Kotlin Idioms
+- Prefer `signum() != 0` over `compareTo(BigDecimal.ZERO) != 0`
+- Use `@Suppress("unused")` instead of Java's `@SuppressWarnings`
+- Prefer `let`, `takeIf`, `also` for null-safe chains
+- Use data classes for value objects
+
+### Logging
+- Every service, controller, scheduler, and repository adapter must have a logger
+- Use SLF4J: `private val logger = LoggerFactory.getLogger(ClassName::class.java)`
+- Use parameterized messages: `logger.info("Processing id: {}", id)` — never string concatenation
+- Log levels:
+  - `INFO` — business events (request received, operation completed, job started/finished)
+  - `DEBUG` — technical details (individual record changes, query results, computed values)
+  - `WARN` — expected errors (not found, validation failures)
+  - `ERROR` — unexpected failures (always include exception)
+
+### Imports
+- Remove all unused imports
+- Do not import with wildcards (`*`)
+
+### Exception Handling
+- Always log exceptions before re-throwing or converting
+- Never swallow exceptions silently
+- Use specific exception types (e.g., `TimeDepositNotFoundException`) over generic `RuntimeException`

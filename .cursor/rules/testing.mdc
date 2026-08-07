@@ -1,0 +1,52 @@
+---
+description: Testing conventions and patterns
+globs: "**/test/**/*.kt"
+alwaysApply: false
+---
+
+# Testing Conventions
+
+## Test Structure
+
+```kotlin
+@Test
+fun shouldDoSomethingWhenCondition() {
+    //given
+    val input = ...
+
+    //when
+    val result = ...
+
+    //then
+    assertThat(result).isEqualTo(expected)
+}
+```
+
+## Rules
+
+- Use `//given`, `//when`, `//then` comments to structure tests (no blank line before comment)
+- Use AssertJ (`assertThat`) for all assertions
+- Use `@ParameterizedTest` with `@MethodSource` for multiple input combinations
+- Companion object data providers use `@JvmStatic` and `@Suppress("unused")`
+- Integration test classes extend `BaseIntegrationTest()`
+- Add `@BeforeEach` cleanup (`deleteAll()`) when tests depend on empty state
+- Variable names in tests should be descriptive: `storedStudentTimeDeposit`, not `deposit1`
+
+## What to Test
+
+- **Unit tests**: Domain logic (calculators, plan definitions, resolvers)
+- **Integration tests**: REST endpoints (happy path + error cases), scheduled jobs, repository queries
+- **Not needed**: Mappers (covered implicitly by integration tests), configuration classes
+
+## Assertions
+
+```kotlin
+// Prefer specific assertions
+assertThat(response.id).isNotNull
+assertThat(response.planType).isEqualTo("student")
+assertThat(response.withdrawals).hasSize(1)
+assertThat(response.withdrawals).isEmpty()
+
+// Avoid generic assertions
+assertThat(response != null).isTrue  // BAD
+```

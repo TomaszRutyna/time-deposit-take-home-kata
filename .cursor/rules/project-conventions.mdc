@@ -1,0 +1,58 @@
+---
+description: Project-wide conventions and workflow requirements
+alwaysApply: true
+---
+
+# Project Conventions
+
+## Technology Stack
+- Kotlin 2.2 on JVM 17
+- Spring Boot 4.x
+- PostgreSQL with Liquibase migrations
+- OpenAPI Generator (kotlin-spring, delegate pattern)
+- ShedLock for distributed scheduling
+- Testcontainers for integration tests
+
+## After Every Change
+
+1. **Run tests**: Always run `mvn clean test` after making changes to verify nothing is broken
+2. **Check compilation**: Ensure no unresolved references or type errors
+3. **Verify logging**: Any new service method or significant operation must include appropriate logging
+4. **Check naming**: Verify parameter names match their semantics across all layers (port → service → adapter)
+
+## API Contract
+
+- REST API is defined in `src/main/resources/openapi/time-deposit-api.yml`
+- Controller implements generated `TimeDepositApi` interface
+- Never modify generated code in `target/generated-sources/` — modify the OpenAPI spec instead
+
+## Database Changes
+
+- All schema changes go through Liquibase (`src/main/resources/liquibase/scripts/`)
+- Never use `ddl-auto: create` or `ddl-auto: update` — schema is managed by Liquibase
+- SQL script naming: `V{timestamp}-{description}.sql`
+
+## Domain Rules (DO NOT CHANGE)
+
+- `TimeDeposit.updateBalance()` signature cannot be modified (kata constraint)
+- Interest formula: `balance × rate / 12`, rounded to configured decimal places
+- Plan definitions are loaded from YAML configuration, not from database
+
+## Testing Requirements
+
+- Integration tests extend `BaseIntegrationTest`
+- Use Testcontainers PostgreSQL for integration tests
+- Use `@SpringBootTest(webEnvironment = RANDOM_PORT)` + `@AutoConfigureMockMvc`
+- Unit tests for domain logic, integration tests for adapters
+- Test method names: `should{ExpectedBehavior}` (e.g., `shouldRecalculateInterests`)
+
+## Code Smells to Avoid
+
+- Unused imports
+- Misleading variable/parameter names
+- Empty catch blocks or swallowed exceptions
+- Long methods (>30 lines) — extract helper methods
+- Raw type warnings
+- Java annotations in Kotlin code (use Kotlin equivalents)
+- String concatenation in log statements
+- Missing `@Transactional` on write operations
