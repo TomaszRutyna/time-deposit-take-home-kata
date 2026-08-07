@@ -15,7 +15,7 @@ class BasePlanDefinition(
     private val constraints: DepositPlanConstraints
 ) {
     companion object {
-        const val NUMBER_OF_MONTH = 12L
+        const val MONTHS_IN_YEAR = 12L
     }
     fun calculateInterests(deposit: TimeDeposit): BigDecimal {
         if (constraints.firstInterestCalculationDay != null
@@ -30,14 +30,14 @@ class BasePlanDefinition(
 
         return valueOf(deposit.balance)
             .multiply(constraints.interestRate)
-            .divide(valueOf(NUMBER_OF_MONTH), constraints.numberOfDecimals, HALF_UP)
+            .divide(valueOf(MONTHS_IN_YEAR), constraints.numberOfDecimals, HALF_UP)
     }
 
     fun nextInterestCalculationDate(deposit: TimeDeposit, lastInterestCalculationDate: LocalDate? = null): LocalDate? {
         val now = LocalDate.now()
 
         val currentDayOfTimeDeposit =
-            ChronoUnit.DAYS.between(deposit.forDate?: now, now) + deposit.days
+            ChronoUnit.DAYS.between(deposit.forDate ?: now, now) + deposit.days
 
         return when {
             constraints.firstInterestCalculationDay != null

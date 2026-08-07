@@ -67,7 +67,7 @@ class BasePlanDefinitionTest {
 
     companion object {
         @JvmStatic
-        @SuppressWarnings("UnusedPrivateMember")
+        @Suppress("unused")
         private fun interestCalculationData(): Stream<Arguments> {
             return Stream.of(
                 of(30, 366, 45, BigDecimal.valueOf(0.83)),
@@ -78,7 +78,7 @@ class BasePlanDefinitionTest {
         }
 
         @JvmStatic
-        @SuppressWarnings("UnusedPrivateMember")
+        @Suppress("unused")
         private fun interestDateCalculationData(): Stream<Arguments> {
             return Stream.of(
                 of(30, 366, 45, null, LocalDate.now()),

@@ -10,7 +10,7 @@ interface TimeDepositRepository {
 
     fun getTimeDeposit(id: Int): TimeDeposit?
 
-    fun getTimeDeposits(pageSize: Int? = null, pageIndex: Int? = null): List<TimeDepositWithWithdrawals>
+    fun getTimeDeposits(pageIndex: Int? = null, pageSize: Int? = null): List<TimeDepositWithWithdrawals>
 
-    fun getTimeDepositsForInterestRecalculation(pageSize: Int, pageIndex: Int): List<TimeDeposit>
+    fun getTimeDepositsForInterestRecalculation(pageIndex: Int, pageSize: Int): List<TimeDeposit>
 }

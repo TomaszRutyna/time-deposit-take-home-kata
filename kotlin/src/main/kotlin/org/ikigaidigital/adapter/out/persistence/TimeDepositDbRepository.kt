@@ -29,44 +29,44 @@ class TimeDepositDbRepository(
         timeDeposit: TimeDeposit,
         withdrawal: Withdrawal?
     ): TimeDepositWithWithdrawals {
-        val storedTimeDepositId = if (timeDeposit.id != null) {
-            val storedTimeDepositId = timeDepositJpaRepository.findByIdOrNull(timeDeposit.id)
+        val savedEntityId = if (timeDeposit.id != null) {
+            val existingEntity = timeDepositJpaRepository.findByIdOrNull(timeDeposit.id)
                 ?: throw TimeDepositNotFoundException(timeDeposit.id)
 
-            val updatedTimeDeposit = timeDepositJpaRepository.save(storedTimeDepositId.updateEntity(timeDeposit))
+            val updatedEntity = timeDepositJpaRepository.save(existingEntity.updateEntity(timeDeposit))
 
             withdrawal?.let {
-                withdrawalJpaRepository.save(it.toEntity(updatedTimeDeposit))
+                withdrawalJpaRepository.save(it.toEntity(updatedEntity))
             }
 
-            storedTimeDepositId.id
+            existingEntity.id
         } else {
             timeDepositJpaRepository.save(timeDeposit.toEntity()).id
         }
 
-        return timeDepositJpaRepository.findByIdWithWithdrawals(storedTimeDepositId!!)!!.toDomainWithWithdrawals()
+        return timeDepositJpaRepository.findByIdWithWithdrawals(savedEntityId!!)!!.toDomainWithWithdrawals()
     }
 
     override fun getTimeDeposit(id: Int) =
         timeDepositJpaRepository.findByIdOrNull(id)?.toDomain()
 
     override fun getTimeDeposits(
-        pageSize: Int?,
-        pageIndex: Int?
-    ) = if (pageSize != null && pageIndex != null) {
+        pageIndex: Int?,
+        pageSize: Int?
+    ) = if (pageIndex != null && pageSize != null) {
         timeDepositJpaRepository.findPageOfTimeDeposits(
-            PageRequest.of(pageSize, pageIndex, Sort.by("id"))
+            PageRequest.of(pageIndex, pageSize, Sort.by("id"))
         ).content.map { it.toDomainWithWithdrawals() }
     } else {
         timeDepositJpaRepository.findAll().map { it.toDomainWithWithdrawals() }
     }
 
     override fun getTimeDepositsForInterestRecalculation(
-        pageSize: Int,
-        pageIndex: Int
+        pageIndex: Int,
+        pageSize: Int
     ) = timeDepositJpaRepository.findByNextInterestCalculationDateNotAfter(
         LocalDate.now(),
-        PageRequest.of(pageSize, pageIndex, Sort.by("id"))
+        PageRequest.of(pageIndex, pageSize, Sort.by("id"))
     )
         .content
         .map { it.toDomain() }

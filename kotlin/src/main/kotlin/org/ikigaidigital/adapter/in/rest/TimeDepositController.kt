@@ -19,14 +19,14 @@ class TimeDepositController(
     private val upsertTimeDeposit: UpsertTimeDeposit
 ): TimeDepositApi {
     override fun getTimeDeposits(pageable: Pageable?): ResponseEntity<TimeDepositPage> {
-        val pageNumber = pageable?.page
+        val pageIndex = pageable?.page
         val pageSize = pageable?.propertySize
 
         return ResponseEntity.ok(
             TimeDepositPage(
-                pageNumber,
+                pageIndex,
                 pageSize,
-                fetchTimeDeposit.fetchTimeDeposits(pageNumber, pageSize).map { it.toResponse() }
+                fetchTimeDeposit.fetchTimeDeposits(pageIndex, pageSize).map { it.toResponse() }
             )
         )
     }

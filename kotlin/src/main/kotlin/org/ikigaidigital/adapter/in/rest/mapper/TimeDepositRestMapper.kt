@@ -30,7 +30,7 @@ fun TimeDepositWithWithdrawals.toResponse(): TimeDepositResponse {
 }
 
 private fun Withdrawals.toResponse() =
-    this.withdrawals.map { it.toResponse()}
+    this.withdrawals.map { it.toResponse() }
 
 private fun Withdrawal.toResponse() =
     WithdrawalResponse(

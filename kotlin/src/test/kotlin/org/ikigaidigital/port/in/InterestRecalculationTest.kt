@@ -46,7 +46,7 @@ class InterestRecalculationTest: BaseIntegrationTest() {
                 nextInterestCalculationDate = LocalDate.now()
             )
         )
-        val storedBasicimeDepositNotValidForRecalculation = timeDepositRepository.save(
+        val storedBasicTimeDepositNotValidForRecalculation = timeDepositRepository.save(
             TimeDepositEntity(
                 planType = "basic",
                 dayOfDeposit = 50,
@@ -75,10 +75,10 @@ class InterestRecalculationTest: BaseIntegrationTest() {
         assertThat(unchangedPremiumDeposit?.balance).isEqualTo(storedPremiumTimeDepositNotValidForRecalculation.balance.setScale(2))
         assertThat(unchangedPremiumDeposit?.nextInterestCalculationDate).isEqualTo(storedPremiumTimeDepositNotValidForRecalculation.nextInterestCalculationDate)
 
-        val unchangedBasicDeposit = timeDepositRepository.findByIdOrNull(storedBasicimeDepositNotValidForRecalculation.id!!)
+        val unchangedBasicDeposit = timeDepositRepository.findByIdOrNull(storedBasicTimeDepositNotValidForRecalculation.id!!)
         assertThat(unchangedBasicDeposit).isNotNull
-        assertThat(unchangedBasicDeposit?.balance).isEqualTo(storedBasicimeDepositNotValidForRecalculation.balance.setScale(2))
-        assertThat(unchangedBasicDeposit?.nextInterestCalculationDate).isEqualTo(storedBasicimeDepositNotValidForRecalculation.nextInterestCalculationDate)
+        assertThat(unchangedBasicDeposit?.balance).isEqualTo(storedBasicTimeDepositNotValidForRecalculation.balance.setScale(2))
+        assertThat(unchangedBasicDeposit?.nextInterestCalculationDate).isEqualTo(storedBasicTimeDepositNotValidForRecalculation.nextInterestCalculationDate)
     }
 
 }

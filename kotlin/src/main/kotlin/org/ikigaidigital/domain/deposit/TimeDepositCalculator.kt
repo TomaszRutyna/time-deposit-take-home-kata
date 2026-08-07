@@ -20,7 +20,7 @@ class TimeDepositCalculator(private val planResolver: PlanDefinitionResolver) {
                 ?.calculateInterests(it)
                 ?: BigDecimal.ZERO.setScale(DEFAULT_DECIMAL_PLACES, RoundingMode.HALF_UP)
 
-            if (interest.compareTo(BigDecimal.ZERO) != 0) {
+            if (interest.signum() != 0) {
                 it.balance += interest.toDouble()
                 it.forDate = LocalDate.now()
                 it.nextInterestCalculationDate = planDefinition?.nextInterestCalculationDate(it, LocalDate.now())

@@ -16,20 +16,26 @@ fun Withdrawal.toEntity(timeDeposit: TimeDepositEntity) =
         timeDeposit = timeDeposit,
     )
 
-fun TimeDepositEntity.updateEntity(timeDeposit: TimeDeposit) =
-    this.copy(
+fun TimeDepositEntity.updateEntity(timeDeposit: TimeDeposit): TimeDepositEntity {
+    val updatedLastInterestCalcDate = if (timeDeposit.nextInterestCalculationDate != null)
+        this.nextInterestCalculationDate else this.lastInterestCalculationDate
+    val updatedNextInterestCalcDate = if (timeDeposit.nextInterestCalculationDate != null)
+        timeDeposit.nextInterestCalculationDate else this.nextInterestCalculationDate
+
+    return this.copy(
         balance = BigDecimal(timeDeposit.balance),
-        forDate = timeDeposit.forDate?: LocalDate.now(),
-        lastInterestCalculationDate = if (timeDeposit.nextInterestCalculationDate != null) this.nextInterestCalculationDate else this.lastInterestCalculationDate,
-        nextInterestCalculationDate = if (timeDeposit.nextInterestCalculationDate != null) timeDeposit.nextInterestCalculationDate else this.nextInterestCalculationDate,
+        forDate = timeDeposit.forDate ?: LocalDate.now(),
+        lastInterestCalculationDate = updatedLastInterestCalcDate,
+        nextInterestCalculationDate = updatedNextInterestCalcDate,
         dayOfDeposit = timeDeposit.days
     )
+}
 
 fun TimeDeposit.toEntity() =
     TimeDepositEntity(
         planType = this.planType,
         balance = BigDecimal.valueOf(this.balance),
-        forDate = this.forDate?: LocalDate.now(),
+        forDate = this.forDate ?: LocalDate.now(),
         dayOfDeposit = this.days,
         nextInterestCalculationDate = this.nextInterestCalculationDate,
         version = 0

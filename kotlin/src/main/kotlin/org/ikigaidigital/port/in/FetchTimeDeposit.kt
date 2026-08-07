@@ -4,5 +4,5 @@ import org.ikigaidigital.domain.deposit.model.TimeDepositWithWithdrawals
 
 interface FetchTimeDeposit {
 
-    fun fetchTimeDeposits(pageSize: Int? = null, pageIndex: Int? = null): List<TimeDepositWithWithdrawals>
+    fun fetchTimeDeposits(pageIndex: Int? = null, pageSize: Int? = null): List<TimeDepositWithWithdrawals>
 }

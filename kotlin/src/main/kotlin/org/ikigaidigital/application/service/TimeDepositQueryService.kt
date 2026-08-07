@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service
 class TimeDepositQueryService(
     private val timeDepositRepository: TimeDepositRepository
 ): FetchTimeDeposit {
-    override fun fetchTimeDeposits(pageSize: Int?, pageIndex: Int?) = timeDepositRepository.getTimeDeposits(pageSize, pageIndex)
+    override fun fetchTimeDeposits(pageIndex: Int?, pageSize: Int?) = timeDepositRepository.getTimeDeposits(pageIndex, pageSize)
 }
