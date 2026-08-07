@@ -98,7 +98,7 @@ components:
       properties:
         page:
           type: integer
-        size:
+        pageSize:
           type: integer
 
     Page:
@@ -107,7 +107,7 @@ components:
       properties:
         number:
           type: integer
-        size:
+        pageSize:
           type: integer
 
     TimeDepositContent:

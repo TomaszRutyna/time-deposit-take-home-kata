@@ -22,7 +22,7 @@ class TimeDepositController(
 
     override fun getTimeDeposits(pageable: Pageable?): ResponseEntity<TimeDepositPage> {
         val pageIndex = pageable?.page
-        val pageSize = pageable?.propertySize
+        val pageSize = pageable?.pageSize
         logger.info("Fetching time deposits - pageIndex: {}, pageSize: {}", pageIndex, pageSize)
 
         val deposits = fetchTimeDeposit.fetchTimeDeposits(pageIndex, pageSize)

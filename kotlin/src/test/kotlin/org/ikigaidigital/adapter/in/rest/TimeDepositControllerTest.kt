@@ -126,8 +126,8 @@ class TimeDepositControllerTest: BaseIntegrationTest() {
         val responseString = mockMvc.perform(
             MockMvcRequestBuilders.get(API_URL)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .queryParam("size", "10")
-                .queryParam("page", "1")
+                .queryParam("pageSize", "10")
+                .queryParam("page", "0")
         ).andReturn().response.contentAsString
         //then
         val response = objectMapper.readValue(responseString, TimeDepositPage::class.java)
